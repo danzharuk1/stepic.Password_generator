@@ -1,35 +1,55 @@
-import random
+from random import *
 
-DIGITS = ['0123456789', False]
-LOWERCASE_LETTERS = ['abcdefghijklmnopqrstuvwxyz', False]
-UPPERCASE_LETTERS = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', False]
-PUNCTUATION = ['!#$%&*+-=?@^_', False]
+flag = True
+DIGITS = '0123456789'
+LOWERCASE_LETTERS = 'abcdefghijklmnopqrstuvwxyz'
+UPPERCASE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+PUNCTUATION = '!#$%&*+-=?@^_'
 BADCHARS = ['il1Lo0O', False]
 allchars = ''
 
-def answer(t):
-    print(t)
+def answer():
     while True:
-        t = input().lower()
+        a = input().lower()
 
-        if t == 'да':
+        if a == 'да':
             return True
 
-        elif t == 'нет':
+        elif a == 'нет':
             return False
 
-p_counter = int(input('Введите количество генерируемых паролей'))
+def generate_password(chars, length):
+    password = ''
+    if len(chars) <= 0 or length <= 0:
+        return '0'
+    for i in range(length):
+        char = choice(chars)
+        if BADCHARS and char not in BADCHARS:
+            password += char
+        else:
+            i += -1
+    return password
+
+p_counter = int(input('Введите количество генерируемых паролей '))
 
 for i in range(p_counter):
-    p_len = int(input('Введите длину пароля'))
+    if flag:
+        p_len = int(input('Введите длину пароля '))
 
-    if answer('Включать ли цифры', DIGITS, 'в возможную область генерации?'):
-        DIGITS[1] = True
-    if answer('Включать ли прописные буквы', UPPERCASE_LETTERS, 'в возможную область генерации?'):
-        UPPERCASE_LETTERS[1] = True
-    if answer('Включать ли строчные буквы', LOWERCASE_LETTERS, 'в возможную область генерации?'):
-        LOWERCASE_LETTERS[1] = True
-    if answer('Включать ли символы', PUNCTUATION, 'в возможную область генерации?'):
-        PUNCTUATION[1] = True
-    if answer('Исключать ли неоднозначные символы', BADCHARS, 'в возможную область генерации?'):
-        BADCHARS[1] = True
+        print('Включать ли цифры', DIGITS, 'в возможную область генерации?')
+        if answer():
+            allchars += DIGITS
+        print('Включать ли прописные буквы', UPPERCASE_LETTERS, 'в возможную область генерации?')
+        if answer():
+            allchars += UPPERCASE_LETTERS
+        print('Включать ли строчные буквы', LOWERCASE_LETTERS, 'в возможную область генерации?')
+        if answer():
+            allchars += LOWERCASE_LETTERS
+        print('Включать ли символы', PUNCTUATION, 'в возможную область генерации?')
+        if answer():
+            allchars += PUNCTUATION
+        print('Исключать ли неоднозначные символы', BADCHARS[0], 'в возможную область генерации?')
+        if answer():
+            BADCHARS[1] = True
+        flag = False
+    print('Ваш пароль', generate_password(allchars, p_len))
